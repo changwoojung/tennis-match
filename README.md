@@ -67,6 +67,15 @@ These matches determine the final rankings. To use this feature:
 
 The champion and runner-up will be highlighted in the final rankings list.
 
+## Player Names in Singles Matches
+
+The application allows you to enter player names for singles matches:
+
+1. Each singles match has input fields for Player A and Player B names
+2. Player names are automatically saved to the browser's local storage
+3. When you refresh the page or return later, player names will be restored
+4. This ensures you don't lose player information between sessions
+
 ## Sharing the Web Application
 
 There are several ways to share this web application with others:

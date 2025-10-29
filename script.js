@@ -16,6 +16,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
+    // Load player names from local storage
+    loadPlayerNames();
+    
     // Add event listeners for score inputs
     const scoreInputs = document.querySelectorAll('.score-input');
     scoreInputs.forEach(input => {
@@ -26,6 +29,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const teamSelects = document.querySelectorAll('.team-select');
     teamSelects.forEach(select => {
         select.addEventListener('change', updateResults);
+    });
+    
+    // Add event listeners for player name inputs
+    const playerInputs = document.querySelectorAll('.player-input');
+    playerInputs.forEach(input => {
+        input.addEventListener('input', savePlayerNames);
     });
     
     // Add new row buttons
@@ -270,6 +279,14 @@ function addNewRow(tableId) {
     newTeamSelects.forEach(select => {
         select.addEventListener('change', updateResults);
     });
+    
+    // Add event listeners to player name inputs if this is a singles match
+    if (tableId === 'singles-table') {
+        const playerInputs = newRow.querySelectorAll('.player-input');
+        playerInputs.forEach(input => {
+            input.addEventListener('input', savePlayerNames);
+        });
+    }
     
     // Update results after adding a new row
     updateResults();
@@ -605,6 +622,53 @@ function updateSinglesSchedule(doublesRanking) {
 function getRankName(index) {
     const ranks = ['1st place', '2nd place', '3rd place', '4th place', '5th place'];
     return ranks[index] || `${index + 1}th place`;
+}
+
+// Function to save player names to local storage
+function savePlayerNames() {
+    const singlesRows = document.querySelectorAll('#singles-table tbody tr');
+    const playerData = [];
+    
+    singlesRows.forEach((row, index) => {
+        const playerAInput = row.querySelector('.player-input:nth-of-type(1)');
+        const playerBInput = row.querySelector('.player-input:nth-of-type(2)');
+        
+        if (playerAInput && playerBInput) {
+            playerData.push({
+                rowIndex: index,
+                playerA: playerAInput.value,
+                playerB: playerBInput.value
+            });
+        }
+    });
+    
+    localStorage.setItem('tennisPlayerNames', JSON.stringify(playerData));
+}
+
+// Function to load player names from local storage
+function loadPlayerNames() {
+    const savedData = localStorage.getItem('tennisPlayerNames');
+    
+    if (savedData) {
+        const playerData = JSON.parse(savedData);
+        const singlesRows = document.querySelectorAll('#singles-table tbody tr');
+        
+        playerData.forEach(data => {
+            if (data.rowIndex < singlesRows.length) {
+                const row = singlesRows[data.rowIndex];
+                const playerAInput = row.querySelector('.player-input:nth-of-type(1)');
+                const playerBInput = row.querySelector('.player-input:nth-of-type(2)');
+                
+                if (playerAInput && data.playerA) {
+                    playerAInput.value = data.playerA;
+                }
+                
+                if (playerBInput && data.playerB) {
+                    playerBInput.value = data.playerB;
+                }
+            }
+        });
+    }
 }
 
 // Made with Bob
