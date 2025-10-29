@@ -222,6 +222,13 @@ function addNewRow(tableId) {
     `;
     newRow.appendChild(teamACell);
     
+    // If singles match, add player A name input
+    if (tableId === 'singles-table') {
+        const playerACell = document.createElement('td');
+        playerACell.innerHTML = '<input type="text" class="player-input" placeholder="Player name">';
+        newRow.appendChild(playerACell);
+    }
+    
     // Create team B cell
     const teamBCell = document.createElement('td');
     teamBCell.innerHTML = `
@@ -234,6 +241,13 @@ function addNewRow(tableId) {
         </select>
     `;
     newRow.appendChild(teamBCell);
+    
+    // If singles match, add player B name input
+    if (tableId === 'singles-table') {
+        const playerBCell = document.createElement('td');
+        playerBCell.innerHTML = '<input type="text" class="player-input" placeholder="Player name">';
+        newRow.appendChild(playerBCell);
+    }
     
     // Create score cell
     const scoreCell = document.createElement('td');
